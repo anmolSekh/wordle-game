@@ -10,19 +10,29 @@ function entry(formData) {
   for(let i = 1; i < 6; i++) {
     word += formData.get(`${i}`);
   }
-  console.log(`${word}`)
+  console.log(`${word}`) //check if word is real before moving on to next input
 
 }
 function App() {
   // const [count, setCount] = useState(0)
+  const goal = "BRAIN";
   const inputRefs = useRef([]); //useref simply stores an empty array in input refs
   const getInputs = () => {
     const inputs = inputRefs.current;
     console.log(inputs);
   }
-  // const handleSubmit = (event,index) => {
-  //   console.log("Submit");
-  // }
+  const handleSubmit = () => {
+    // console.log("Submit");
+    for(let i = 0; i < inputRefs.current.length; i++) {
+      if(inputRefs.current[i].value == goal[i]) { 
+        //Make letter green yellow or grey like wordle
+        //make sure submit allows word to stay
+        console.log("Correct letter");
+      } else {
+        console.log("Incorrect Letter");
+      }
+    }
+  }
   const handleKeyUp = (event,index) => { //Once key is released move to next square
     console.log(`Key pressed at ${index}:`, event.key); 
     if (event.key !== "Backspace" && index < inputRefs.current.length-1) {
@@ -38,7 +48,7 @@ function App() {
     <>
       <section id="word">
         <div id="first"> {/* first word*/}
-          <form id="word1" action={entry}>
+          <form id="word1" action={entry} onSubmit={handleSubmit}>
             <input type = "text" name='1' id="first1" maxLength="1" ref={(e) => (inputRefs.current[0] = e)} onKeyUp={(e) => handleKeyUp(e,0)}></input>
             <input type = "text" name='2' id="first2" maxLength="1" ref={(e) => (inputRefs.current[1] = e)} onKeyUp={(e) => handleKeyUp(e,1)}></input>
             <input type = "text" name='3' id="first3" maxLength="1" ref={(e) => (inputRefs.current[2] = e)} onKeyUp={(e) => handleKeyUp(e,2)}></input>
