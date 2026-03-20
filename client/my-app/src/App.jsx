@@ -23,6 +23,7 @@ function App() {
   // const [count, setCount] = useState(0)
   const goal = "BRAIN";
   const inputRefs = useRef([]); //useref simply stores an empty array in input refs
+  const usedWords = useState([]);
   const getInputs = () => {
     const inputs = inputRefs.current;
     console.log(inputs);
@@ -71,9 +72,10 @@ function App() {
           
         </div>
       </section>
-      {/* handle illegal characters */}
+      {/* handle illegal characters * done */}
       {/* create enter key handler * done */}
       {/* check input value by input id like if first1.value === word[0] */}
+      {/* Create a list/array that prevents writing duplicate words */}
       {/* check if word is in dictionary */}
       {/* dont understand useState and useEffect yet */}
       
