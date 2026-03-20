@@ -4,14 +4,11 @@ import './App.css'
 function isLetter(str) {
   return str.length === 1 && str.match(/[a-z]/i);
 }
-function entry(formData) { //this might be pointless
-  // const words = formData.get("");
-  let word = "";
-  for(let i = 1; i < 6; i++) {
-    word += formData.get(`${i}`);
+function isWord(str,used) { //add word checking logic here
+  if(used.has(word)) {
+    console.log("YES"); //These do not evaluate correct, map contains word but does not evaluate true
   }
-  console.log(`${word}`) //check if word is real before moving on to next input
-
+  return used.has(word);
 }
 function lettersOnly(input) { //use regex to make sure input is only a character
     // Replace any character that is NOT a letter (a-z, A-Z) with an empty string
@@ -23,7 +20,8 @@ function App() {
   // const [count, setCount] = useState(0)
   const goal = "BRAIN";
   const inputRefs = useRef([]); //useref([]) simply stores an empty array in input refs
-  const usedWords = useState([]);
+  const usedWords = new Map();
+  usedWords.set("CRANE",1);
   const getInputs = () => {
     const inputs = inputRefs.current;
     console.log(inputs);
@@ -31,15 +29,29 @@ function App() {
   const handleSubmit = (event) => { //Only allow submit if all letters full, only allow going to next letter if previous letter is full
     // console.log("Submit");
     event.preventDefault();
+    let word = "";
     for(let i = 0; i < inputRefs.current.length; i++) {
-      if(inputRefs.current[i].value == goal[i]) { 
+      let letter = inputRefs.current[i].value;
+      word += letter;
+      if(letter == goal[i]) { 
         //Make letter green yellow or grey like wordle
         //make sure submit allows word to stay
-        console.log("Correct letter");
+        console.log("Correct Letter");
       } else {
         console.log("Incorrect Letter");
       }
     }
+    console.log(`Word submitted: ${word}`);
+    if(isWord(word,usedWords)) {
+      //If word is real run game logic
+      //Run game logic
+      //append to usedWords
+      usedWords.set(word,1); //Adds word to list
+      //go to next word
+    } else {
+      console.log("Illegal word");
+    }
+    console.log(usedWords); //maybe make used words into map instead to check if word is in array;
   }
   const handleKeyUp = (event,index) => { //Once key is released move to next square
     event.target.value = event.target.value.toUpperCase(); //Automatically make each character uppercase like wordle 
@@ -50,7 +62,7 @@ function App() {
         inputRefs.current[index + 1].focus(); //Dont skip characters if typing too fast
       }
       
-    } else if(event.key === "Backspace") {
+    } else if(event.key === "Backspace" && index !== 0) {
       inputRefs.current[index-1].focus();
     }
     //  else if (index === 4 && event.key === "Enter" && inputRefs.current[index].value.length === 1) {
@@ -65,7 +77,7 @@ function App() {
     */}
       <section id="word">
         <div id="first"> {/* first word*/}
-          <form id="word1" action={entry} onSubmit={(e) => (handleSubmit(e))}> 
+          <form id="word1" onSubmit={(e) => (handleSubmit(e))}> 
             <input type = "text" name='1' id="first1" maxLength="1" onChange={(e) => (lettersOnly(e.target))} ref={(e) => (inputRefs.current[0] = e)} onKeyUp={(e) => handleKeyUp(e,0)}></input> 
             <input type = "text" name='2' id="first2" maxLength="1" onChange={(e) => (lettersOnly(e.target))} ref={(e) => (inputRefs.current[1] = e)} onKeyUp={(e) => handleKeyUp(e,1)}></input>
             <input type = "text" name='3' id="first3" maxLength="1" onChange={(e) => (lettersOnly(e.target))} ref={(e) => (inputRefs.current[2] = e)} onKeyUp={(e) => handleKeyUp(e,2)}></input>
