@@ -2,13 +2,14 @@ import { useState, useRef } from 'react'
 import './App.css'
 
 function isLetter(str) {
-  return str.length === 1 && str.match(/[a-z]/i);
+  return str.length === 1 && str.match(/[a-z]/i); //Check if single character is an alphabetic letter
 }
 function isWord(str,used) { //add word checking logic here
-  if(used.has(word)) {
-    console.log("YES"); //These do not evaluate correct, map contains word but does not evaluate true
-  }
-  return used.has(word);
+  // console.log(`Evaluating what is ${str} ? Type: ${typeof(str)}`);
+  // if(word == "CRANE") {
+  //   console.log("YES"); 
+  // }
+  return !used.current.includes(str);
 }
 function lettersOnly(input) { //use regex to make sure input is only a character
     // Replace any character that is NOT a letter (a-z, A-Z) with an empty string
@@ -20,8 +21,8 @@ function App() {
   // const [count, setCount] = useState(0)
   const goal = "BRAIN";
   const inputRefs = useRef([]); //useref([]) simply stores an empty array in input refs
-  const usedWords = new Map();
-  usedWords.set("CRANE",1);
+  const usedWords = useRef([]);
+  // usedWords.current.push("CRANE"); //Test for duplicate words
   const getInputs = () => {
     const inputs = inputRefs.current;
     console.log(inputs);
@@ -46,7 +47,7 @@ function App() {
       //If word is real run game logic
       //Run game logic
       //append to usedWords
-      usedWords.set(word,1); //Adds word to list
+      usedWords.current.push(word); //Adds word to list
       //go to next word
     } else {
       console.log("Illegal word");
