@@ -4,7 +4,7 @@ import './App.css'
 function isLetter(str) {
   return str.length === 1 && str.match(/[a-z]/i);
 }
-function entry(formData) {
+function entry(formData) { //this might be pointless
   // const words = formData.get("");
   let word = "";
   for(let i = 1; i < 6; i++) {
@@ -13,7 +13,7 @@ function entry(formData) {
   console.log(`${word}`) //check if word is real before moving on to next input
 
 }
-function lettersOnly(input) {
+function lettersOnly(input) { //use regex to make sure input is only a character
     // Replace any character that is NOT a letter (a-z, A-Z) with an empty string
     // The 'g' flag ensures all occurrences are replaced, not just the first
     // The regex /[^a-zA-Z]/g matches any character not in the range a-z or A-Z
@@ -22,7 +22,7 @@ function lettersOnly(input) {
 function App() {
   // const [count, setCount] = useState(0)
   const goal = "BRAIN";
-  const inputRefs = useRef([]); //useref simply stores an empty array in input refs
+  const inputRefs = useRef([]); //useref([]) simply stores an empty array in input refs
   const usedWords = useState([]);
   const getInputs = () => {
     const inputs = inputRefs.current;
@@ -42,7 +42,7 @@ function App() {
     }
   }
   const handleKeyUp = (event,index) => { //Once key is released move to next square
-    event.target.value = event.target.value.toUpperCase(); //Automatically make each character uppercase like wordle
+    event.target.value = event.target.value.toUpperCase(); //Automatically make each character uppercase like wordle 
     console.log(event.target.value);
     console.log(`Key pressed at ${index}:`, event.key); 
     if (isLetter(event.key) && index < inputRefs.current.length-1) {
@@ -56,12 +56,16 @@ function App() {
     //  else if (index === 4 && event.key === "Enter" && inputRefs.current[index].value.length === 1) {
     //   // console.log("Submitting");
     // }
-  }
+  } //Make each input into a react extended componenet? Need to somehow change style of inputs dynamically. Also need 6 more of the words, maybe create them dynamically.
+  //Make sure word can be read after submit. Store word into list, prevent editing previous lineswhen enter is pressed
   return (
     <>
+    {/* Create a function that returns forms that have 6 input fields all with the conditions below
+        first make sure one word actually functions for all conditions, then make it work for 6 words
+    */}
       <section id="word">
         <div id="first"> {/* first word*/}
-          <form id="word1" action={entry} onSubmit={(e) => (handleSubmit(e))}>
+          <form id="word1" action={entry} onSubmit={(e) => (handleSubmit(e))}> 
             <input type = "text" name='1' id="first1" maxLength="1" onChange={(e) => (lettersOnly(e.target))} ref={(e) => (inputRefs.current[0] = e)} onKeyUp={(e) => handleKeyUp(e,0)}></input> 
             <input type = "text" name='2' id="first2" maxLength="1" onChange={(e) => (lettersOnly(e.target))} ref={(e) => (inputRefs.current[1] = e)} onKeyUp={(e) => handleKeyUp(e,1)}></input>
             <input type = "text" name='3' id="first3" maxLength="1" onChange={(e) => (lettersOnly(e.target))} ref={(e) => (inputRefs.current[2] = e)} onKeyUp={(e) => handleKeyUp(e,2)}></input>
