@@ -27,8 +27,9 @@ function App() {
     const inputs = inputRefs.current;
     console.log(inputs);
   }
-  const handleSubmit = () => { //Only allow submit if all letters full, only allow going to next letter if previous letter is full
+  const handleSubmit = (event) => { //Only allow submit if all letters full, only allow going to next letter if previous letter is full
     // console.log("Submit");
+    event.preventDefault();
     for(let i = 0; i < inputRefs.current.length; i++) {
       if(inputRefs.current[i].value == goal[i]) { 
         //Make letter green yellow or grey like wordle
@@ -40,9 +41,14 @@ function App() {
     }
   }
   const handleKeyUp = (event,index) => { //Once key is released move to next square
+    event.target.value = event.target.value.toUpperCase(); //Automatically make each character uppercase like wordle
+    console.log(event.target.value);
     console.log(`Key pressed at ${index}:`, event.key); 
     if (isLetter(event.key) && index < inputRefs.current.length-1) {
-      inputRefs.current[index + 1].focus();
+      if(event.target.value.length > 0) {
+        inputRefs.current[index + 1].focus(); //Dont skip characters if typing too fast
+      }
+      
     } else if(event.key === "Backspace") {
       inputRefs.current[index-1].focus();
     }
@@ -54,12 +60,12 @@ function App() {
     <>
       <section id="word">
         <div id="first"> {/* first word*/}
-          <form id="word1" action={entry} onSubmit={handleSubmit}>
-            <input type = "text" name='1' id="first1" maxLength="1" onInput={(e) => (lettersOnly(e.target))} ref={(e) => (inputRefs.current[0] = e)} onKeyUp={(e) => handleKeyUp(e,0)}></input>
-            <input type = "text" name='2' id="first2" maxLength="1" onInput={(e) => (lettersOnly(e.target))} ref={(e) => (inputRefs.current[1] = e)} onKeyUp={(e) => handleKeyUp(e,1)}></input>
-            <input type = "text" name='3' id="first3" maxLength="1" onInput={(e) => (lettersOnly(e.target))} ref={(e) => (inputRefs.current[2] = e)} onKeyUp={(e) => handleKeyUp(e,2)}></input>
-            <input type = "text" name='4' id="first4" maxLength="1" onInput={(e) => (lettersOnly(e.target))} ref={(e) => (inputRefs.current[3] = e)} onKeyUp={(e) => handleKeyUp(e,3)}></input>
-            <input type = "text" name='5' id="first5" maxLength="1" onInput={(e) => (lettersOnly(e.target))} ref={(e) => (inputRefs.current[4] = e)} onKeyUp={(e) => handleKeyUp(e,4)}></input>
+          <form id="word1" action={entry} onSubmit={(e) => (handleSubmit(e))}>
+            <input type = "text" name='1' id="first1" maxLength="1" onChange={(e) => (lettersOnly(e.target))} ref={(e) => (inputRefs.current[0] = e)} onKeyUp={(e) => handleKeyUp(e,0)}></input> 
+            <input type = "text" name='2' id="first2" maxLength="1" onChange={(e) => (lettersOnly(e.target))} ref={(e) => (inputRefs.current[1] = e)} onKeyUp={(e) => handleKeyUp(e,1)}></input>
+            <input type = "text" name='3' id="first3" maxLength="1" onChange={(e) => (lettersOnly(e.target))} ref={(e) => (inputRefs.current[2] = e)} onKeyUp={(e) => handleKeyUp(e,2)}></input>
+            <input type = "text" name='4' id="first4" maxLength="1" onChange={(e) => (lettersOnly(e.target))} ref={(e) => (inputRefs.current[3] = e)} onKeyUp={(e) => handleKeyUp(e,3)}></input>
+            <input type = "text" name='5' id="first5" maxLength="1" onChange={(e) => (lettersOnly(e.target))} ref={(e) => (inputRefs.current[4] = e)} onKeyUp={(e) => handleKeyUp(e,4)}></input>
             <input type="submit" hidden />
           </form>
           
