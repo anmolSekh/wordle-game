@@ -79,11 +79,14 @@ function App() {
       <section id="word">
         <div id="first"> {/* first word*/}
           <form id="word1" onSubmit={(e) => (handleSubmit(e))}> 
-            <input type = "text" name='1' id="first1" maxLength="1" onChange={(e) => (lettersOnly(e.target))} ref={(e) => (inputRefs.current[0] = e)} onKeyUp={(e) => handleKeyUp(e,0)}></input> 
+            {[0,1,2,3,4].map((_,i) => (
+              <input key={i} type='text' maxLength={"1"} onChange={(e) => (lettersOnly(e.target))} ref={(e) => (inputRefs.current[i] = e)} onKeyUp={(e) => handleKeyUp(e,i)}  />
+            ))}
+            {/* <input type = "text" name='1' id="first1" maxLength="1" onChange={(e) => (lettersOnly(e.target))} ref={(e) => (inputRefs.current[0] = e)} onKeyUp={(e) => handleKeyUp(e,0)}></input> 
             <input type = "text" name='2' id="first2" maxLength="1" onChange={(e) => (lettersOnly(e.target))} ref={(e) => (inputRefs.current[1] = e)} onKeyUp={(e) => handleKeyUp(e,1)}></input>
             <input type = "text" name='3' id="first3" maxLength="1" onChange={(e) => (lettersOnly(e.target))} ref={(e) => (inputRefs.current[2] = e)} onKeyUp={(e) => handleKeyUp(e,2)}></input>
             <input type = "text" name='4' id="first4" maxLength="1" onChange={(e) => (lettersOnly(e.target))} ref={(e) => (inputRefs.current[3] = e)} onKeyUp={(e) => handleKeyUp(e,3)}></input>
-            <input type = "text" name='5' id="first5" maxLength="1" onChange={(e) => (lettersOnly(e.target))} ref={(e) => (inputRefs.current[4] = e)} onKeyUp={(e) => handleKeyUp(e,4)}></input>
+            <input type = "text" name='5' id="first5" maxLength="1" onChange={(e) => (lettersOnly(e.target))} ref={(e) => (inputRefs.current[4] = e)} onKeyUp={(e) => handleKeyUp(e,4)}></input> */}
             <input type="submit" hidden />
           </form>
           
